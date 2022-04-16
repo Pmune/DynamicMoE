@@ -2,18 +2,12 @@ rm(list=ls())
 graphics.off()
 cat("\014")
 
-setwd("C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/")
-setwd("C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/")
-
-data_file_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/'
-data_file_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/'
-
 # load the data
 source("data_cleaner.R")
 source("interval_predictions.R")
 
 # load posterior output
-load("selected_model_posterior.R")
+load("outputs/selected_model_posterior.R")
 
 # setting plot input
 exp.col<- c("ChangedModule","FileComplexity")
