@@ -1,26 +1,6 @@
 
 
-mixture_model_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_mixture/'
-mixture_model_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_mixture/'
-poisson_model_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_poisson/'
-poisson_model_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_poisson/'
-common_file_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/common/'
-common_file_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/common/'
-data_file_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/'
-data_file_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/'
-
-# dynamic mixture model files
-source(paste0(mixture_model_path,"/dynamic_mixture_particle_filter.R"))
-source(paste0(mixture_model_path,"/dynamic_mixture_proposal.R"))
-source(paste0(mixture_model_path,"/dynamic_mixture_prediction.R"))
-# files for  poisson models
-source(paste0(poisson_model_path,"/dynamic_poisson_particle_filter.R"))
-source(paste0(poisson_model_path,"/dynamic_linear_bayes_poisson_proposal.R"))
-source(paste0(poisson_model_path,"/dynamic_poisson_prediction.R"))
-
-# common source files
-source(paste0(common_file_path,"/stratified_rejection_resampling.R"))
-
+library(dmoe)
 
 interval_predictions <- function(Data, Test.data, time.intervals, post_output,
                                  pred_intervals, exp.col, mix.col, n_comp, y.max){
@@ -55,5 +35,5 @@ interval_predictions <- function(Data, Test.data, time.intervals, post_output,
     names(interval_density_fitted) = model_names
     density_fitted[[j]] <- interval_density_fitted
   }
-  return(observed = observed_density, predicted = density_fitted)
+  return(list(observed = observed_density, predicted = density_fitted))
 }

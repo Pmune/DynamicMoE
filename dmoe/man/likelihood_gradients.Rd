@@ -7,14 +7,14 @@
 likelihood_gradients(y, linear_pred, n_comp)
 }
 \arguments{
-\item{y}{A vector of response variable values.}
+\item{y}{A  response value.}
 
 \item{linear_pred}{A vector of the linear predictors in both components and mixture weights models.}
 
 \item{n_comp}{Number of mixture components.}
 }
 \value{
-A vector of the likelihood gradients.
+A matrix of the likelihood gradients.
 }
 \description{
 Computing the first derivative of the mixture model's likelihood with respect to the linear predictors.

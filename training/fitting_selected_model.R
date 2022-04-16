@@ -8,27 +8,25 @@ library(dmoe)
 source("data_cleaner.R")
 
 # ------set the model parameters  ---------
+exp_col<-c("ChangedModule","FileComplexity")
+mix_col<-c("Commits")
 
-set.seed(600)
-exp.col<-c("ChangedModule","FileComplexity")
-mix.col<-c("Commits")
-
-N.particles<-100000 #number of particles (recommended number of particles: 10000)
+n_particles<-10000 #number of particles (recommended number of particles: 10000)
 alpha<-0.5
-R<-2
-n_comp=2
+n_comp <-2
 density.fitted<-c()
-system.time(output_pois<-FAPF1Comp(Data,time.intervals,M=N.particles,exp.col,
-                                   time_ind=1,response_ind=2,alpha,R,h=1)) # run the model with one component
-message(paste0("ESS for Poisson model: ( ",mean(output_pois$ESS), " )"))
-message(paste0("LPS for Poisson model: ( ",output_pois$LPS, " )"))
+output_pois <- dmoe(Data, time.intervals, n_particles, mix_col, exp_col,
+               n_comp=1, alpha=alpha, return_all=TRUE)
+
+message(paste0("ESS for Poisson model: ",mean(output_pois$ess)))
+message(paste0("LPS for Poisson model: ",output_pois$lps))
 
 # dynamic model with 2 components
-system.time(output_mix<-FAPF(Data,time.intervals,N.particles,mix.col,exp.col,
-                             n_comp,time_ind=1,response_ind=2,alpha,R,F,h=1))
+output_mix <- dmoe(Data, time.intervals, n_particles, mix_col, exp_col,
+                    n_comp=n_comp, alpha=alpha, return_all=TRUE)
 
-message(paste0("ESS for 2 components Poisson mixture model: ( ",mean(output_mix$ESS), " )"))
-message(paste0("LPS for 2 components Poisson mixture model: ( ",output_mix$LPS, " )"))
+message(paste0("ESS for 2 components Poisson mixture model: ",mean(output_mix$ess)))
+message(paste0("LPS for 2 components Poisson mixture model: ",output_mix$lps))
 
 # save output
 model_posterior <- list(poisson=output_pois, poisson_mix=output_mix)

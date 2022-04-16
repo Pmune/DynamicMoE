@@ -7,7 +7,7 @@
 posterior_linear_moments(y, linear_pred, prior_var_inv, n_comp)
 }
 \arguments{
-\item{y}{A vector of response variable values.}
+\item{y}{A response value.}
 
 \item{linear_pred}{A vector of the linear predictors in both components and mixture weights models.}
 

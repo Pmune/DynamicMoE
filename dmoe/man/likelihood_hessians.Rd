@@ -2,20 +2,20 @@
 % Please edit documentation in R/local_linearization_functions.R
 \name{likelihood_hessians}
 \alias{likelihood_hessians}
-\title{Likelihood hessians}
+\title{Likelihood hessian matrix}
 \usage{
 likelihood_hessians(linear_pred, component, n_comp)
 }
 \arguments{
 \item{linear_pred}{A vector of the linear predictors in both components and mixture weights models.}
 
-\item{component}{An index between 1 and n_comp indicating with component the derivatives are computed for.}
+\item{component}{An index between 1 and n_comp indicating which component the derivatives are computed for.}
 
 \item{n_comp}{Number of mixture components.}
 }
 \value{
-The likelihood hessian matrix for given component index.
+The likelihood hessian matrix for a given component index.
 }
 \description{
-Computing the second derivative of the mixture model's likelhood with respect to the linear predictors.
+Computing the second derivatives of the mixture model's likelihood with respect to the linear predictors of a given component.
 }

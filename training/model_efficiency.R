@@ -1,35 +1,12 @@
 rm(list=ls())
 graphics.off()
 cat("\014")
-setwd("C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/")
-setwd("C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/")
 
-# ----- required paths -----------------------------
 
-mixture_model_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_mixture/'
-mixture_model_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_mixture/'
-poisson_model_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_poisson/'
-poisson_model_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/dynamic_poisson/'
-common_file_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/common/'
-common_file_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/common/'
-data_file_path <- 'C:/Users/parfait/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/'
-data_file_path <- 'C:/Users/eparfmu/Box Sync/PhD file/projects/Survivor analysis/Paper 3 Software quality control/codes/training_models/'
+library(dmoe)
 
-# dynamic mixture model files
-source(paste0(mixture_model_path,"/dynamic_mixture_particle_filter.R"))
-source(paste0(mixture_model_path,"/dynamic_mixture_proposal.R"))
-source(paste0(mixture_model_path,"/dynamic_mixture_prediction.R"))
-
-# files for  poisson models
-source(paste0(poisson_model_path,"/dynamic_poisson_particle_filter.R"))
-source(paste0(poisson_model_path,"/dynamic_linear_bayes_poisson_proposal.R"))
-source(paste0(poisson_model_path,"/dynamic_poisson_prediction.R"))
-
-# common source files
-source(paste0(common_file_path,"/stratified_rejection_resampling.R"))
-
-# load the data 
-source(paste0(data_file_path,"/data_cleaner.R"))
+# load the data
+source("data_cleaner.R")
 
 
 # ------set the model parameters  ---------
@@ -53,5 +30,5 @@ system.time(output<-FAPF(Data, time.intervals, N.particles, mix.col, exp.col,
 }
 
 
-save(output_efficiency,file="posterior_for_model_efficiency_new_1.R")
+save(output_efficiency,file="outputs/posterior_for_model_efficiency.R")
 
