@@ -11,8 +11,12 @@ design_matrix <- function(x, z, n_comp){
   return(design_mat)
 }
 
+<<<<<<< HEAD
 #' Log likelihood for the mixture of experts model
 #' @export
+=======
+# marginal likelihood for the mixture model
+>>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 mixture_log_likelihood<-function(y, x, z, param, n_comp){
   log_likelihood<-0
   for(i in seq_len(length(y))){
@@ -27,9 +31,13 @@ mixture_log_likelihood<-function(y, x, z, param, n_comp){
   return(log_likelihood)
 }
 
+<<<<<<< HEAD
 #' Log likelihood for Poisson regression model
 #' @export
 #'
+=======
+# likelihood for dynamic poisson model
+>>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 poisson_log_likelihood<-function(y,X,param)
 {
   log_likelihood<-0
