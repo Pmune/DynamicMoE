@@ -1,87 +1,4 @@
 
-particles_update_multicomp <- function(y, x, z, n_comp, sample_size, particles,
-                                       importance_weights, alpha,
-                                        proposal_method="linearbayes"){
-  sample_size = length(importance_weights)
-  prior_moments <- reg_coef_prior_moment(particles, importance_weights)
-  if (proposal_method == "linearbayes"){
-    proposal_density = linear_bayes_proposal_multicomp
-  } else{
-    proposal_density = local_linear_proposal_multicomp
-  }
-  # proposal density moments
-  prop_moments <- tryCatch ({
-    proposal_density(y, x, z, prior_moments$mean,
-                     prior_moments$var*(alpha**-1), n_comp)
-  },
-  error = function(err){
-    print("something went wrong in the proposal density. Recomputing again the proposal density moments")
-    print(err)
-    return(proposal_density(y, x, z, prior_moments$mean,
-
-                            prior_moments$var*(alpha**-1 -1), n_comp))
-  })
-
-  new_particles<-rmvnorm(sample_size, prop_moments$mean, prop_moments$cov)
-
-  newimportance_weights<-apply(as.matrix(1:sample_size),1,function(m)
-    importance_weight_multicomp(y, x, z, new_particles[m,], importance_weights,
-                              particles,prior_moments$mean,
-                              prior_moments$var*(alpha**-1-1),
-                              prop_moments$mean,
-                             prop_moments$cov, n_comp))
-  newimportance_weights[which(is.na(newimportance_weights))]<--log(1e-300)
-  newimportance_weights[is.infinite(newimportance_weights)]<-log(1e-300)
-
-  log_likelihood <-apply(as.matrix(1:nrow(particles)),1,function(m)
-    mixture_log_likelihood(y, x, z, particles[m,], n_comp))
-  log_pred_dens =  log(sum(as.numeric(1e-300 + exp(log_likelihood))*importance_weights))
-
-  return(list(particles = new_particles, weights = newimportance_weights,
-              log_pred_dens = log_pred_dens ))
-}
-
-
-particles_update_1comp <- function(y, x, sample_size, particles, importance_weights, alpha,
-                                       proposal_method="linearbayes"){
-
-  prior_moments <- reg_coef_prior_moment(particles, importance_weights)
-
-  if (proposal_method == "linearbayes"){
-    proposal_density = linear_bayes_proposal_1comp
-  } else{
-    proposal_density = local_linear_proposal_1comp
-  }
-  # proposal density moments
-  prop_moments <- tryCatch ({
-    proposal_density(y, x, prior_moments$mean, prior_moments$var*(alpha**-1))
-  },
-  error = function(err){
-    print("something went wrong in the proposal density. Recomputing again the proposal density moments")
-    print(err)
-    return(proposal_density(y, x, prior_moments$mean,
-
-                            prior_moments$var*(alpha**-1 -1)))
-  })
-
-  new_particles<-rmvnorm(sample_size, prop_moments$mean, prop_moments$cov)
-
-  newimportance_weights<-apply(as.matrix(1:sample_size),1,function(m)
-    importance_weight_1comp(y, x, new_particles[m,], importance_weights,
-                            particles,prior_moments$mean,
-                            prior_moments$var*(alpha**-1-1),
-                            prop_moments$mean, prop_moments$cov))
-  newimportance_weights[which(is.na(newimportance_weights))]<--log(1e-300)
-  newimportance_weights[is.infinite(newimportance_weights)]<-log(1e-300)
-
-  log_likelihood<-apply(as.matrix(1:nrow(particles)),1,function(m)
-    poisson_log_likelihood(y, x, particles[m,]))
-  log_pred_dens =  log(sum(as.numeric(1e-300 + exp(log_likelihood))*importance_weights))
-
-  return(list(particles = new_particles, weights = newimportance_weights,
-              log_pred_dens = log_pred_dens ))
-}
-
 
 #' particle filter algorithm for dynamic mixture of experts
 #' @export
@@ -89,7 +6,7 @@ particles_update_1comp <- function(y, x, sample_size, particles, importance_weig
 
 dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
                n_comp=1, v_init = 1, time_ind=1, response_ind=2, alpha=0.45, R=2,
-               proposal_method="linearbayes", return_all=F){
+               proposal_method="linearbayes", mpf=T, return_all=F){
 
   #pacman::p_load(mvtnorm, LaplacesDemon) # load required packages
   interval_length<-length(intervals)-1 # number of time periods
@@ -116,15 +33,41 @@ dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
     x <- as.matrix(D[,c(exp_col)]) # covariate in the component models
     if (n_comp > 1){
       z <- as.matrix(D[,c(mix_col)]) # covariate in the mixture weight models
-      particles_update = particles_update_multicomp(y, x, z, n_comp,particle_size,
-                                                    particles,
-                                                    importance_weights, alpha,
-                                                    proposal_method)
-    } else{
-      particles_update = particles_update_1comp(y, cbind(1,x), particle_size,
+      if(mpf){
+        particles_update = mpf_update_multicomp(y, x, z, n_comp,
+                                                particle_size,
                                                 particles,
-                                                importance_weights, alpha,
+                                                importance_weights,
+                                                alpha,
                                                 proposal_method)
+
+      } else{
+        particles_update = particles_update_multicomp(y, x, z, n_comp,
+                                                      particle_size,
+                                                      particles,
+                                                      importance_weights,
+                                                      alpha,
+                                                      proposal_method)
+      }
+
+    } else{
+
+      if(mpf){
+        particles_update = mpf_update_1comp(y, cbind(1,x),
+                                            particle_size,
+                                            particles,
+                                            importance_weights,
+                                            alpha,
+                                            proposal_method)
+
+      } else{
+        particles_update = particles_update_1comp(y, cbind(1,x),
+                                                  particle_size,
+                                                  particles,
+                                                  importance_weights, alpha,
+                                                  proposal_method)
+      }
+
     }
 
     newimportance_weights<-normalize(particles_update$weights)
@@ -141,6 +84,7 @@ dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
                               as.numeric(run_time) * 60,
                               as.numeric(run_time) * 3600))
     # compute the effective sample size
+    cat(paste0("ESS for Interval ", j, " = ", 1/sum(importance_weights^2)))
     ess[j-1]<-(1/sum(importance_weights^2))/run_time
     # compute the log predictive score
     if(j > floor((interval_length-1)/2)){
