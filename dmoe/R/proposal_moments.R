@@ -20,8 +20,6 @@ linear_bayes_proposal_1comp <- function(y, x, param, cov_param){
 
   }
   return(list(mean = param, cov = cov_param))
-<<<<<<< HEAD
-=======
 }
 
 #' Proposal for Single component models using local linearization of the target online posterior density.
@@ -54,7 +52,6 @@ local_linear_proposal_1comp <- function( y, x, param, cov_param){
 
   }
   return (list(mean = param, cov = cov_param ))
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 }
 
 #' Proposal for Single component models using local linearization of the target online posterior density.
@@ -107,7 +104,6 @@ local_linear_proposal_1comp <- function(y, x, param, cov_param){
 #'
 #' @return Updated mean and covariance matrix of the regression parameter.
 
-<<<<<<< HEAD
 linear_bayes_proposal_multicomp <-function( y, x, z, param, cov_param, n_comp){
     expected_allocation <- c()
     for(h in seq_len(length(y))){
@@ -117,26 +113,6 @@ linear_bayes_proposal_multicomp <-function( y, x, z, param, cov_param, n_comp){
       expected_allocation <- colSums(rbind(expected_allocation,
                                    compute_allocation_prob(y[h], prior$linear_pred, n_comp)))/h
       expected_allocation <- expected_allocation/sum(expected_allocation)
-=======
-multiple_component_proposal <-function(y, x, z, theta, cov_theta, n_comp){
-  for(h in seq_len(length(y))){
-    prior <- linear_pred_prior_moments(x[h,], z[h,], theta, cov_theta, n_comp)
-    # compute the inverse of the prior variance of linear predictors
-    prior_var_linear_pred_inv <- robust_inverse(prior$var_linear_pred)
-    # compute the posterior moments of the linear predictor
-    posterior_linear_pred <- posterior_linear_moments(response = y[h],
-                                               linear_pred = prior$linear_pred,
-                                               prior_var_inv = prior_var_linear_pred_inv,
-                                               n_comp = n_comp)
-    # update the proposal moments
-    theta <- theta + c(prior$covar_linear_pred %*% prior_var_linear_pred_inv %*%
-                         t(posterior_linear_pred$location - prior$linear_pred))
-    cov_theta <- cov_theta - ((prior$covar_linear_pred %*% prior_var_linear_pred_inv) %*%
-                                (diag(length(prior$linear_pred)) -
-                                   posterior_linear_pred$variance %*% prior_var_linear_pred_inv) %*%
-                                t(prior$covar_linear_pred))
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
-
       # update the component linear predictors
       gradient<- gradient_linear_pred(expected_allocation, y[h],
                                       prior$linear_pred, n_comp)
@@ -161,57 +137,7 @@ multiple_component_proposal <-function(y, x, z, theta, cov_theta, n_comp){
   return(list(mean = param, cov = cov_param ))
 }
 
-<<<<<<< HEAD
-=======
 
-#' Proposal function based on the linear Bayes approximation of the target
-#' online posterior density.
-#'
-#' Computes the updated first and second moments for the proposal density for
-#'  mixture models using linear Bayes approximation of the target online posterior density.
-#' @param y A vector of response variable values.
-#' @param x  A matrix of dimension h x (p+1) containing the covariates data, where h is the number of observations (equal to the length of y) and p represent the dimension the covariates in the component models.
-#' Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.
-#' @param z  A matrix of dimension h x (q+1) containing the covariates data, where h is the number of observations (equal to the length of y) and q represent the dimension the covariates in the mixture weights model.
-#' Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.
-#' @param param The prior mean of the regression parameter in both component and mixture weight models.
-#' @param cov_param The prior covariance matrix of the regression parameter in both component and mixture weight models.
-#' @param n_comp Number of mixture components.
-#'
-#' @return Updated mean and covariance matrix of the regression parameter.
-
-linear_bayes_proposal_multicomp <-function( y, x, z, param, cov_param, n_comp){
-
-    for(h in seq_len(length(y))){
-      prior <- linear_pred_prior_moments(x[h,], z[h,], param, cov_param, n_comp)
-      # compute the inverse of the prior variance of linear predictors
-      inv_var_linear_pred <- robust_inverse(prior$var_linear_pred)
-      expected_allocation <- compute_allocation_prob(y[h], prior$linear_pred, n_comp)
-      # update the component linear predictors
-      gradient<- gradient_linear_pred(expected_allocation,
-                                      prior$linear_pred, y[h], n_comp)
-      hessian_matrix <- hessian_linear_pred(expected_allocation, y[h],
-                                            prior$linear_pred, n_comp)
-      # compute the posterior moments of the linear predictor
-      posterior_linear_pred <- update_linear_moments(prior$linear_pred,
-                                                     inv_var_linear_pred,
-                                                     gradient,
-                                                     hessian_matrix)
-      # update the proposal moments
-      param <- param + c(prior$covar_linear_pred %*% inv_var_linear_pred %*%
-                           t(posterior_linear_pred$location - prior$linear_pred))
-      cov_param <- cov_param - ((prior$covar_linear_pred %*% inv_var_linear_pred) %*%
-                                  (diag(length(prior$linear_pred)) -
-                                     posterior_linear_pred$variance %*% inv_var_linear_pred) %*%
-                                  t(prior$covar_linear_pred))
-
-      cov_param <- 0.5*(cov_param + t(cov_param)) + diag(1E-5, nrow(cov_param)) # ensure that the covariance is symetric
-    }
-
-  return(list(mean = param, cov = cov_param ))
-}
-
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 #' Proposal function based on the local linearization of the target online posterior density.
 #'
 #' Computes the updated first and second moments for the proposal density for
@@ -227,24 +153,20 @@ linear_bayes_proposal_multicomp <-function( y, x, z, param, cov_param, n_comp){
 #'
 #' @return Updated mean and covariance matrix of the regression parameter.
 
-<<<<<<< HEAD
-local_linear_proposal_multicomp <- function(y, x, z, param, cov_param, n_comp){
-=======
-local_linear_proposal_multicomp <- function( y, x, z, param, cov_param, n_comp){
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 
+local_linear_proposal_multicomp <- function(y, x, z, param, cov_param, n_comp){
+
+  expected_allocation <- c()
     for(h in seq_len(length(y))){
       prior <- linear_pred_prior_moments(x[h,], z[h,], param, cov_param, n_comp)
       # compute the inverse of the prior variance of linear predictors
-<<<<<<< HEAD
-=======
-      inv_var_linear_pred <- robust_inverse(prior$var_linear_pred)
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
-      expected_allocation <- compute_allocation_prob(y[h],
-                                                     prior$linear_pred, n_comp)
-      # update the component linear predictors
 
-<<<<<<< HEAD
+      inv_var_linear_pred <- robust_inverse(prior$var_linear_pred)
+      expected_allocation <- colSums(rbind(expected_allocation,
+                                           compute_allocation_prob(y[h],
+                                            prior$linear_pred, n_comp)))/h
+      expected_allocation <- expected_allocation/sum(expected_allocation)
+      # update the component linear predictors
       gradient <- gradient_reg_coeff(design_matrix(x[h,], z[h,], n_comp),
                                      t(gradient_linear_pred(expected_allocation,
                                                           y[h],
@@ -252,20 +174,12 @@ local_linear_proposal_multicomp <- function( y, x, z, param, cov_param, n_comp){
                                                           n_comp)))
 
       hessian_matrix <- hessian_reg_coeff(design_matrix(x[h,], z[h,], n_comp),
-=======
-      gradient <- gradient_reg_coeff(design_matrix(x[h,], z[h,],n_comp),
-                                     gradient_linear_pred(expected_allocation,
-                                                          prior$linear_pred,
-                                                          y[h],
-                                                          n_comp))
-
-      hessian_matrix <- hessian_reg_coeff(design_matrix(x[h,], z[h,],n_comp),
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
                                           hessian_linear_pred(expected_allocation,
                                                               y[h],
                                                               prior$linear_pred,
                                                               n_comp))
-      # compute the posterior moments of the linear predictor
+
+  # compute the posterior moments of the linear predictor
       updated_moments <- update_linear_moments(param, robust_inverse(cov_param),
                                                gradient, hessian_matrix)
       param <- updated_moments$location

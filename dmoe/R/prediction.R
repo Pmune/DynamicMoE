@@ -5,12 +5,10 @@ dmixpois<-function(y,lambda,Mix.wgt){
   return(dens)
 }
 
-<<<<<<< HEAD
+
 #' Predictive density for dynamic mixture of experts.
 #' @export
-=======
 
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 predictions_mutlicomp<-function(test_data,particles,importance_weight,y_max,exp_col,mix_col,n_comp){
   d.ftd<-c()
   for(i in 1:nrow(test_data)){
@@ -30,11 +28,10 @@ predictions_mutlicomp<-function(test_data,particles,importance_weight,y_max,exp_
   return(d.ftd)
 }
 
-<<<<<<< HEAD
+
 #' Predictive density for dynamic Poisson regression.
 #' @expor
-=======
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
+
 predictions_1Comp<-function(test_data,Particles,ImportanceWeight,y.max,exp.col){
 
   d.ftd<-c()

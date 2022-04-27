@@ -112,11 +112,8 @@ gradient_linear_pred <- function (allocation_prob, y, linear_pred, n_comp){
 #' Computing the posterior gradients with respect to the linear predictors.
 #'
 #' @param allocation_prob A vector of component allocation probabilities.
-<<<<<<< HEAD
 #' @param y A response value.
-=======
 #' @param y A vector of response variable values.
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 #' @param linear_pred A vector of the linear predictors in both components and mixture weights models.
 #' @param n_comp Number of mixture components.
 #' @return  The hessian matrix with respect to the linear predictors.
@@ -138,11 +135,7 @@ hessian_linear_pred <- function (allocation_prob, y, linear_pred, n_comp){
 
 gradient_reg_coeff <- function(x_mat, grad_linear_pred){
 
-<<<<<<< HEAD
   return (as.vector(x_mat %*% grad_linear_pred))
-=======
-  return (x_mat %*% grad_linear_pred)
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
 }
 
 
@@ -163,11 +156,11 @@ hessian_reg_coeff <- function(x_mat, hess_linear_pred){
 posterior_linear_moments<- function(y, linear_pred, prior_var_inv, n_comp){
   expected_allocation <- compute_allocation_prob(y,linear_pred,n_comp)
   # update the component linear predictors
-<<<<<<< HEAD
+
   gradient<- gradient_linear_pred(expected_allocation, linear_pred, y, n_comp)
   hessian_matrix <- hessian_linear_pred(expected_allocation, y,
                                         linear_pred,n_comp)
-=======
+
   gradient<- gradient_linear_pred(allocation_prob =expected_allocation,
                                                      linear_pred = linear_pred,
                                                      y = y,
@@ -177,24 +170,27 @@ posterior_linear_moments<- function(y, linear_pred, prior_var_inv, n_comp){
                                                 linear_pred = linear_pred,
                                                 n_comp = n_comp
                                                 )
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
+
   posterior_var <- robust_inverse(hessian_matrix + prior_var_inv)
   posterior_location <- linear_pred + gradient %*% posterior_var
   return(list(location = posterior_location, variance = posterior_var))
 }
 
 
-<<<<<<< HEAD
+
 update_linear_moments<- function(prior_mean, inv_prior_var,
                                  gradient, hessian_matrix){
   updated_var <- robust_inverse(hessian_matrix + inv_prior_var)
   updated_location <- prior_mean + gradient %*% updated_var
-  return(list(location = as.vector(updated_location), variance = updated_var))
-=======
+
+   return(list(location = as.vector(updated_location), variance = updated_var))
+  }
+
+
 update_linear_moments<- function(prior_mean,  inv_prior_var, gradient, hessian_matrix){
   updated_var <- robust_inverse(hessian_matrix + inv_prior_var)
   updated_location <- prior_mean + gradient %*% updated_var
   return(list(location = updated_location, variance = updated_var))
->>>>>>> b448a75bab05897aa5955b3f5b730ddb72c5a5b1
+
 }
 
