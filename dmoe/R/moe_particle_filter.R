@@ -6,7 +6,7 @@
 
 dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
                n_comp=1, v_init = 1, time_ind=1, response_ind=2, alpha=0.45, R=2,
-               proposal_method="linearbayes", mpf=T, return_all=F){
+               proposal_method="linearbayes", mpf=F, static=F, return_all=F){
 
   #pacman::p_load(mvtnorm, LaplacesDemon) # load required packages
   interval_length<-length(intervals)-1 # number of time periods
@@ -33,49 +33,79 @@ dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
     x <- as.matrix(D[,c(exp_col)]) # covariate in the component models
     if (n_comp > 1){
       z <- as.matrix(D[,c(mix_col)]) # covariate in the mixture weight models
-      if(mpf){
-        particles_update = mpf_update_multicomp(y, x, z, n_comp,
-                                                particle_size,
-                                                particles,
-                                                importance_weights,
-                                                alpha,
-                                                proposal_method)
 
-      } else{
-        particles_update = particles_update_multicomp(y, x, z, n_comp,
+      if(static){
+        D_j <-Data[which(Data[,time_ind] <= intervals[j]),]
+        D_prev=list(y=D_j[,response_ind],
+                    x=as.matrix(D_j[,c(exp_col)]),
+                    z=as.matrix(D_j[,c(mix_col)]))
+        particles_update = static_particles_update_multicomp(y, x, z, n_comp,
                                                       particle_size,
                                                       particles,
                                                       importance_weights,
                                                       alpha,
-                                                      proposal_method)
+                                                      proposal_method,
+                                                      D_prev=D_prev,
+                                                      v_init=v_init)
+
+      }
+      else{
+        if(mpf){
+          particles_update = mpf_update_multicomp(y, x, z, n_comp,
+                                                  particle_size,
+                                                  particles,
+                                                  importance_weights,
+                                                  alpha,
+                                                  proposal_method)
+
+        } else{
+          particles_update = particles_update_multicomp(y, x, z, n_comp,
+                                                        particle_size,
+                                                        particles,
+                                                        importance_weights,
+                                                        alpha,
+                                                        proposal_method)
+        }
+
       }
 
     } else{
 
-      if(mpf){
-        particles_update = mpf_update_1comp(y, cbind(1,x),
-                                            particle_size,
-                                            particles,
-                                            importance_weights,
-                                            alpha,
-                                            proposal_method)
-
-      } else{
-        particles_update = particles_update_1comp(y, cbind(1,x),
+      if(static){
+        particles_update = static_particles_update_1comp(y, cbind(1,x),
                                                   particle_size,
                                                   particles,
                                                   importance_weights, alpha,
                                                   proposal_method)
+      }else{
+        if(mpf){
+          particles_update = mpf_update_1comp(y, cbind(1,x),
+                                              particle_size,
+                                              particles,
+                                              importance_weights,
+                                              alpha,
+                                              proposal_method)
+
+        } else{
+          particles_update = particles_update_1comp(y, cbind(1,x),
+                                                    particle_size,
+                                                    particles,
+                                                    importance_weights, alpha,
+                                                    proposal_method)
+        }
+
       }
 
     }
 
     newimportance_weights<-normalize(particles_update$weights)
+    #importance_weights <- normalize(particles_update$weights)
+    #particles <- particles_update$particles
 
     # resampling step
 
-    newsample<-reject_strat_resample(newimportance_weights,particle_size/R)
-    index<-newsample$index # indexes of sampled particles
+    newsample <- reject_strat_resample(newimportance_weights,particle_size/R)
+    index <-newsample$index # indexes of sampled particles
     importance_weights<-newsample$weights
     end_time <- Sys.time()
     run_time <- end_time - start_time
@@ -84,7 +114,7 @@ dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
                               as.numeric(run_time) * 60,
                               as.numeric(run_time) * 3600))
     # compute the effective sample size
-    cat(paste0("ESS for Interval ", j, " = ", 1/sum(importance_weights^2)))
+    #cat(paste0("ESS for Interval ", j, " = ", 1/sum(importance_weights^2)))
     ess[j-1]<-(1/sum(importance_weights^2))/run_time
     # compute the log predictive score
     if(j > floor((interval_length-1)/2)){
@@ -92,6 +122,7 @@ dmoe<-function(Data, intervals, particle_size, mix_col=NULL, exp_col=NULL,
     }
     # reset the previous paramater vector
     particles <- particles_update$particles[index,]
+
     # save the sampled particles
     if(return_all){
       particles_sample[[j-1]] <- particles

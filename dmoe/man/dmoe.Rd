@@ -17,6 +17,8 @@ dmoe(
   alpha = 0.45,
   R = 2,
   proposal_method = "linearbayes",
+  mpf = F,
+  static = F,
   return_all = F
 )
 }

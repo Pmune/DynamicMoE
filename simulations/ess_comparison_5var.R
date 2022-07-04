@@ -11,4 +11,4 @@ ess_comp_5vars <- ess_comparizon(paramdim=6, n_particles=n_particles,
 save(ess_comp_5vars,file="results/ess_comp_5vars.R")
 
 plot.ts(ess_comp_5vars$lb)
-lines(ess_comp_5vars$ll, color="red")
+lines(ess_comp_5vars$ll, col="red")

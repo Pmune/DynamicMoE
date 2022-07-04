@@ -5,6 +5,8 @@
 \title{Proposal for Single component models using local linearization of the target online posterior density.}
 \usage{
 local_linear_proposal_1comp(y, x, param, cov_param)
+
+local_linear_proposal_1comp(y, x, param, cov_param)
 }
 \arguments{
 \item{y}{A vector of response variable values.}
@@ -20,8 +22,13 @@ Note that the the first column is a column  of 1s which is added in order to all
 }
 \value{
 Updated mean and covariance matrix of the regression parameter.
+
+Updated mean and covariance matrix of the regression parameter.
 }
 \description{
+Computes the updated first and second moments for the proposal density for
+ single component models using local linearization of the target online posterior density.
+
 Computes the updated first and second moments for the proposal density for
  single component models using local linearization of the target online posterior density.
 }

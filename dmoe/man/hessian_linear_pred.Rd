@@ -9,7 +9,7 @@ hessian_linear_pred(allocation_prob, y, linear_pred, n_comp)
 \arguments{
 \item{allocation_prob}{A vector of component allocation probabilities.}
 
-\item{y}{A response value.}
+\item{y}{A vector of response variable values.}
 
 \item{linear_pred}{A vector of the linear predictors in both components and mixture weights models.}
 

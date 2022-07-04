@@ -1,12 +1,23 @@
 rm(list=ls())
 graphics.off()
 cat("\014")
-
+param_ordering <- function(param, par_dim=2, ncomp=2){
+permuted <- array(0,dim(param))
+for(i in seq_len(nrow(param))){
+  p <- param[i,]
+  if (p[1]<=p[3]){
+    permuted[i,] <- c(p[c(1:2)], p[c(3:4)], p[-c(1:4)])
+  }else{
+    permuted[i,] <- c(p[c(3:4)], p[c(1:2)], p[-c(1:4)])
+  }
+}
+return(permuted)
+}
 # load simulation study file
 source('model_selection_simulation_study.R')
 library(dmoe)
 library(flexmix)
-true_par <- cbind(c(0.1, -.5), c(-0.1, 0.5), c(2,-4))
+true_par <- cbind(c(-0.1, -0.5), c(0.1, 0.5), c(2,-4))
 x_grid <- seq(-1, 1, length.out=100)
 
 
@@ -33,7 +44,7 @@ for(iter in 1:30){
   train.data <- sim.data$train
   for(k in 1:3){
   dmoe_model <- dmoe::dmoe(train.data, time_intervals, n_particles, mix_col=c(3),
-                           exp_col=c(3), n_comp=k, alpha=.95)
+                           exp_col=c(3), n_comp=k, alpha=.99, v_init=10, static=F)
   lps <- c(lps,dmoe_model$lps)
   flex_model <- flexmix::flexmix(y~x, data = train.data, k=k,
                                  model = FLXMRglm(family = "poisson"),
@@ -49,18 +60,40 @@ for(iter in 1:30){
   print(freq_flex)
 }
 
-# dmoe_par <- colSums(dmoe_model$particles*dmoe_model$weights)
-# dmoe_par
+# predictive mean function
+k=2
+start <- Sys.time()
+dmoe_model <- dmoe::dmoe(train.data, time_intervals, n_particles, mix_col=c(3),
+                         exp_col=c(3), n_comp=k, alpha=.99, v_init=10, static=F)
+end <- Sys.time()
+print(end-start)
+dmoe_model$lps
+dmoe_model$ess
+flex_model <- flexmix::flexmix(y~x, data = train.data, k=k,
+                               model = FLXMRglm(family = "poisson"),
+                               concomitant = FLXPmultinom(~x))
+dmoe_par <- colSums((dmoe_model$particles)*dmoe_model$weights)
+dmoe_par
+flex_par <- cbind(parameters(flex_model),
+                  parameters(flex_model, which="concomitant")[,-1])
 
-# flex_par <- cbind(parameters(flex_model),
-#                   parameters(flex_model, which="concomitant")[,-1])
+flex_par
 
-# flex_par
-#
-# flex_mean <- compute_mean(flex_par, x_grid,2)
-# dmoe_mean <- compute_mean(matrix(dmoe_par, nrow=2), x_grid, 3)
-# true_mean <- compute_mean(true_par, x_grid)
-#
-# plot.ts(true_mean, ylim=range(true_mean, dmoe_mean, flex_mean))
-# lines(ts(dmoe_mean), col="blue",pch=3)
-# lines(ts(flex_mean), col="red")
+flex_mean <- compute_mean(flex_par, x_grid,2)
+dmoe_mean <- compute_mean(matrix(dmoe_par, nrow=2), x_grid, k)
+true_mean <- compute_mean(true_par, x_grid)
+
+
+
+plot(x_grid,true_mean, type = "n",
+     lty = 1,lwd = 2, ylim = range(true_mean, dmoe_mean, flex_mean),
+     ylab = " ", xlab =" ", tck = -0.01)
+lines(x_grid,true_mean,type="l",col="black",lty=3,lwd=1)
+lines(x_grid,flex_mean,type="l",col="red",lty=1,lwd=1)
+lines(x_grid,dmoe_mean,type="l",col="blue",lty=2,lwd=1)
+mtext("x", 1, cex= 1, line = 3, font = 1)
+mtext("Predictive mean", 2, cex= 1, line = 3, font = 1)
+legend("topright",c("TrueMean", "Flexmix","LinearBayes"),
+       col = c("black", "red", "blue"), lty=c(3,1,2))
+
+

@@ -19,9 +19,9 @@ simulate_data <-function(paramdim, dgp, dates, n=100){
   #                   rep(c(-0.08, 1.94),paramdim),
   #                   rep(c(.5,-2),paramdim))[1:paramdim,]
   #
-  init_par <- cbind(rep(c(0.1, -.5),paramdim),
+  init_par <- cbind(rep(c(-0.1, -0.5),paramdim),
                     rep(c(-0.1, 0.5),paramdim),
-                    rep(c(2,-4),paramdim))[1:paramdim,]
+                    rep(c(.5,-2),paramdim))[1:paramdim,]
   # v <- cbind(rep(c(0.08,0.15),paramdim),
   #            rep(c(0.08,0.1),paramdim),
   #            rep(c(0.08,0.17),paramdim))[1:paramdim,]
