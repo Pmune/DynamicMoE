@@ -1,14 +1,12 @@
-rm(list=ls())
-graphics.off()
-cat("\014")
-
+# run the simulation experiment with the dynamic Poisson data generating process.
 # load simulation study file
 source('R/model_selection_simulation_study.R')
 
 
 # ------- run the simulation study ------
+message("----------Experiment with dynamic Poisson DGP starts---------")
 start_time = Sys.time()
-dynamic_poisson_dgp<- simulation_study_wrapper(dgp = "dynamicpois",iterations=5)
+dynamic_poisson_dgp<- simulation_study_wrapper(dgp = "dynamicpois",iterations=10)
 end_time = Sys.time()
 print(end_time - start_time)
 
@@ -17,3 +15,4 @@ print(end_time - start_time)
 file_tag <- "1" # file tag
 
 save(dynamic_poisson_dgp,file=paste0("results/dynamic_poisson_dgp_results_", file_tag, ".R"))
+message("----------Experiment with dynamic Poisson DGP ends---------")

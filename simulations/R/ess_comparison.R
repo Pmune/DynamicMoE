@@ -124,7 +124,7 @@ ess_comparison_simul <- function(iterations, n_particles,  paramdim = 2, discoun
 #--------------------------- Run the simulation -------------------------------------
 
 n_particles <- 1000 # number of particles
-iterations <- 3 # number of iterations
+iterations <- 10 # number of iterations
 ess_comp <- ess_comparison_simul(paramdim = 2, n_particles = n_particles, iterations = iterations)
 
 # files are saved with a tag appended to the file name to avoid overwriting files.

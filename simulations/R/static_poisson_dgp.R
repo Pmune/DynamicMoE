@@ -1,13 +1,11 @@
-rm(list=ls())
-graphics.off()
-cat("\014")
-
+# run the simulation experiment with the static Poisson data generating process.
 # load simulation study file
 source('R/model_selection_simulation_study.R')
 
 # ------- run the simulation study ------
+message("----------Experiment with static Poisson DGP starts---------")
 start_time = Sys.time()
-static_poisson_dgp<- simulation_study_wrapper(dgp = "staticpois", iterations=5)
+static_poisson_dgp<- simulation_study_wrapper(dgp = "staticpois", iterations=10)
 end_time = Sys.time()
 print(end_time - start_time)
 
@@ -16,3 +14,4 @@ print(end_time - start_time)
 file_tag <- "1" # file tag
 
 save(static_poisson_dgp, file=paste0("results/static_poisson_dgp_results_", file_tag, ".R"))
+message("----------Experiment with static Poisson DGP ends---------")

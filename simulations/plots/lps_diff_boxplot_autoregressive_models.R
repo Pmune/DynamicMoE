@@ -19,23 +19,23 @@ hrbrthemes::import_roboto_condensed()
 file_tag <- "1"
 dmoe_dyn_10 = read.table(paste0("results/dynamic_dgp_batch_lps_batchsize10_", file_tag, ".csv"),
                        sep = ",", header = TRUE)
-dmoe_dyn_25 = read.table(paste0("resultsdynamic_dgp_batch_lps_batchsize25_", file_tag, ".csv"),
+dmoe_dyn_25 = read.table(paste0("results/dynamic_dgp_batch_lps_batchsize25_", file_tag, ".csv"),
                          sep = ",", header = TRUE)
-dmoe_dyn_50 = read.table(paste0("resultsdynamic_dgp_batch_lps_batchsize50_", file_tag, ".csv"),
+dmoe_dyn_50 = read.table(paste0("results/dynamic_dgp_batch_lps_batchsize50_", file_tag, ".csv"),
                          sep = ",", header = TRUE)
-dmoe_static_10 = read.table(paste0("resultsstatic_dgp_batch_lps_batchsize10_",file_tag, ".csv"),
+dmoe_static_10 = read.table(paste0("results/static_dgp_batch_lps_batchsize10_",file_tag, ".csv"),
                             sep = ",", header = TRUE)
-dmoe_static_25 = read.table(paste0("resultsstatic_dgp_batch_lps_batchsize25_", file_tag, ".csv"),
+dmoe_static_25 = read.table(paste0("results/static_dgp_batch_lps_batchsize25_", file_tag, ".csv"),
                             sep = ",", header = TRUE)
-dmoe_static_50 = read.table(paste0("resultsstatic_dgp_batch_lps_batchsize50_", file_tag, ".csv"),
+dmoe_static_50 = read.table(paste0("results/static_dgp_batch_lps_batchsize50_", file_tag, ".csv"),
                             sep = ",", header = TRUE)
 
 # Load MoE model LPS
-moe_dyn_10 = read.table("resultsLPS_dyn_batchsize_10.csv",
+moe_dyn_10 = read.table("results/LPS_dyn_batchsize_10.csv",
                         sep = ",", header = FALSE)
-moe_dyn_25 = read.table("resultsLPS_dyn_batchsize_25.csv",
+moe_dyn_25 = read.table("results/LPS_dyn_batchsize_25.csv",
                         sep = ",", header = FALSE)
-moe_dyn_50 = read.table("resultsLPS_dyn_batchsize_50.csv",
+moe_dyn_50 = read.table("results/LPS_dyn_batchsize_50.csv",
                         sep = ",", header = FALSE)
 moe_static_10 = read.table("results/LPS_static_batchsize_10.csv",
                            sep = ",", header = FALSE)

@@ -1,13 +1,11 @@
 # Training and computing the log predictive score (lps) for
 # the autoregressive timeseries model with static parameters (M4) in section 5.
-rm(list=ls())
-graphics.off()
-cat("\014")
 
+message("----------Experiment with static autoregressive Poisson DGP starts---------")
 source("R/train_autoregressive_timeseries_models.R")
 
 data_path <- "data/simdata_static.csv" # 50 datasets generated from M4 saved in the csv file.
-sim_data <- read.csv(data_path, header = FALSE)[,1:5]
+sim_data <- read.csv(data_path, header = FALSE)
 discount_grid <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7,0.8, 0.9, 0.99)
 
 # files are saved with a tag appended to the file name to avoid overwriting files.
@@ -41,5 +39,7 @@ write.csv(
     row.names=FALSE
     )
 }
-print(end_time - start_time)
+
 end_time <- Sys.time()
+print(end_time - start_time)
+message("----------Experiment with static autoregressive Poisson DGP ends---------")
