@@ -18,7 +18,7 @@ particles_update_multicomp <- function(y, x, z, n_comp, sample_size, particles,
     print(err)
     return(proposal_density(y, x, z, prior_moments$mean,
 
-                            prior_moments$var*(alpha**-1 -1), n_comp))
+                            prior_moments$var*alpha, n_comp))
   })
 
   new_particles<-rmvnorm(sample_size, prop_moments$mean, prop_moments$cov)
@@ -26,10 +26,10 @@ particles_update_multicomp <- function(y, x, z, n_comp, sample_size, particles,
   newimportance_weights<-apply(as.matrix(1:sample_size),1,function(m)
     importance_weight_multicomp(y, x, z, new_particles[m,], importance_weights,
                                 particles,prior_moments$mean,
-                                prior_moments$var*(alpha**-1-1),
+                                prior_moments$var*(alpha**-1 - 1),
                                 prop_moments$mean,
                                 prop_moments$cov, n_comp))
-  newimportance_weights[which(is.na(newimportance_weights))]<--log(1e-300)
+  newimportance_weights[which(is.na(newimportance_weights))]<-log(1e-300)
   newimportance_weights[is.infinite(newimportance_weights)]<-log(1e-300)
 
   log_likelihood <-apply(as.matrix(1:nrow(particles)),1,function(m)
@@ -60,7 +60,7 @@ particles_update_1comp <- function(y, x, sample_size, particles, importance_weig
     print(err)
     return(proposal_density(y, x, prior_moments$mean,
 
-                            prior_moments$var*(alpha**-1 -1)))
+                            prior_moments$var*alpha))
   })
 
   new_particles<-rmvnorm(sample_size, prop_moments$mean, prop_moments$cov)
@@ -79,4 +79,21 @@ particles_update_1comp <- function(y, x, sample_size, particles, importance_weig
 
   return(list(particles = new_particles, weights = newimportance_weights,
               log_pred_dens = log_pred_dens ))
+}
+
+
+online_update <- function(y, x, n_comp, sample_size, particles,
+                             importance_weights, alpha, z=NULL,
+                             proposal_method="linearbayes"){
+  if (n_comp > 1){
+    if(is.null(z)) z <- x
+    updated_sample = particles_update_multicomp(y, x, z, n_comp, sample_size,
+                                                  particles, importance_weights,
+                                                  alpha, proposal_method)
+  } else{
+    updated_sample = particles_update_1comp(y, x, sample_size, particles,
+                                              importance_weights, alpha,
+                                              proposal_method)
+  }
+  return (updated_sample)
 }

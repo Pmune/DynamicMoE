@@ -2,23 +2,26 @@
 % Please edit documentation in R/proposal_moments.R
 \name{linear_bayes_proposal_1comp}
 \alias{linear_bayes_proposal_1comp}
-\title{Proposal for Single component models using linear Bayes}
+\title{Compute the updated first and second moments for the proposal density of
+ single component models using linear Bayes approximations.}
 \usage{
-linear_bayes_proposal_1comp(y, x, param, cov_param)
+linear_bayes_proposal_1comp(y, x, reg_coef, cov_reg_coef)
 }
 \arguments{
 \item{y}{A vector of response variable values.}
 
-\item{x}{A matrix of dimension h x (p+1) containing the covariates data, where h is the number of observations (equal to the length of y) and p represent the dimension the covariates.
-Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.}
+\item{x}{A matrix of dimension h x p containing the covariates data,
+where h is the number of observations (equal to the length of y) and
+p represent the dimension the covariates.}
 
-\item{param}{The prior mean of the regression parameter.}
+\item{reg_coef}{A vector of the regression coefficients.}
 
-\item{cov_param}{The prior covariance matrix of the regression parameter.}
+\item{cov_reg_coef}{The covariance matrix of the regression coefficient.}
 }
 \value{
 Updated mean and covariance matrix of the regression parameter.
 }
 \description{
-Computes the updated first and second moments for the proposal density of single component models using linear Bayes approximations.
+Compute the updated first and second moments for the proposal density of
+ single component models using linear Bayes approximations.
 }

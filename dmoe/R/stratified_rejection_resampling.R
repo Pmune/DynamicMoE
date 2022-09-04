@@ -79,7 +79,7 @@ strat_resample <- function(w, n) {
 }
 
 
-#' A function for normalizing any set empirical densities.
+#' A function for normalizing any set of empirical densities.
 
 #' @param values A vector of unnormalized densities
 #' @returns A vector of normalized densities

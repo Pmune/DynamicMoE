@@ -2,10 +2,26 @@
 % Please edit documentation in R/likelihood_functions.R
 \name{mixture_log_likelihood}
 \alias{mixture_log_likelihood}
-\title{Log likelihood for the mixture of experts model}
+\title{Log likelihood for the mixture of experts model.}
 \usage{
-mixture_log_likelihood(y, x, z, param, n_comp)
+mixture_log_likelihood(y, x, z, reg_coef, n_comp)
+}
+\arguments{
+\item{y}{A vector of response variable values.}
+
+\item{x}{A matrix of dimension n x p containing the covariates data,
+where n is the number of observations (equal to the length of y) and
+p represent the dimension the covariates in the component models.}
+
+\item{z}{A matrix of dimension n x q containing the covariates data,
+where n is the number of observations (equal to the length of y) and
+q represent the dimension the covariates in the mixture weights model.}
+
+\item{reg_coef}{Vector of the regression coefficients (including the intercept)
+in both the component and mixture weight models.}
+
+\item{n_comp}{Number of mixture components.}
 }
 \description{
-Log likelihood for the mixture of experts model
+Log likelihood for the mixture of experts model.
 }

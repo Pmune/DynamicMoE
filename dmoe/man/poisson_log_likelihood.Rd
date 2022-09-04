@@ -2,10 +2,19 @@
 % Please edit documentation in R/likelihood_functions.R
 \name{poisson_log_likelihood}
 \alias{poisson_log_likelihood}
-\title{Log likelihood for Poisson regression model}
+\title{Log likelihood for Poisson regression model.}
 \usage{
-poisson_log_likelihood(y, X, param)
+poisson_log_likelihood(y, x, reg_coef)
+}
+\arguments{
+\item{y}{A vector of response variable values.}
+
+\item{x}{A matrix of dimension n x p containing the covariates data,
+where n is the number of observations (equal to the length of y) and
+p represent the dimension the covariates.}
+
+\item{reg_coef}{Vector of the regression coefficients including the intercept.}
 }
 \description{
-Log likelihood for Poisson regression model
+Log likelihood for Poisson regression model.
 }

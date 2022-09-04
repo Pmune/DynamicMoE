@@ -1,7 +1,7 @@
 #' Compute the prior moments of the linear predictor from the degenerate joint
 #' prior distribution of the linear predictor and the regression coefficients.
 #'
-#' @param x  A matrix of dimension h x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension h x p containing the covariates data,
 #' where h is the number of observations (equal to the length of y) and
 #' p represent the dimension the covariates in the component models.
 #' Note that the the first column is a column  of 1s which is added in order

@@ -3,17 +3,16 @@
 #'  single component models using linear Bayes approximations.
 #'
 #' @param y A vector of response variable values.
-#' @param x  A matrix of dimension h x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension h x p containing the covariates data,
 #' where h is the number of observations (equal to the length of y) and
 #' p represent the dimension the covariates.
-#' Note that the the first column is a column  of 1s which is added
-#' in order to allow for the intercept in the model.
 #' @param reg_coef A vector of the regression coefficients.
 #' @param cov_reg_coef The covariance matrix of the regression coefficient.
 #'
 #' @return Updated mean and covariance matrix of the regression parameter.
 
 linear_bayes_proposal_1comp <- function(y, x, reg_coef, cov_reg_coef){
+  x <- cbind(1, x) # add extra column for the intercept to the covariate matrix
   for(h in seq_len(length(y))){
     cov_link <- cov_reg_coef %*% x[h,] # covariance value from the link function
     P<-as.vector(x[h,] %*% cov_link) # prior variance
@@ -31,20 +30,17 @@ linear_bayes_proposal_1comp <- function(y, x, reg_coef, cov_reg_coef){
 #'  single component models using local linearization of the target online posterior density.
 #'
 #' @param y A vector of response variable values.
-#' @param x  A matrix of dimension h x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension h x p containing the covariates data,
 #' where h is the number of observations (equal to the length of y) and
 #' p represent the dimension the covariates in the component models.
-#' Note that the the first column is a column  of 1s which is added
-#' in order to allow for the intercept in the model.
 #' @param reg_coef A vector of the regression coefficients.
 #' @param cov_reg_coef The covariance matrix of the regression coefficients.
 
 #' @return Updated mean and covariance matrix of the regression parameter.
 
 local_linear_proposal_1comp <- function( y, x, reg_coef, cov_reg_coef){
-
+  x <- cbind(1, x) # add extra column for the intercept to the covariate matrix
   for(h in seq_len(length(y))){
-
     linear_pred <- x[h,]%*%reg_coef
     gradient <- gradient_reg_coeff(x[h,], y[h] - exp(linear_pred))
     hessian_matrix <- hessian_reg_coeff(x[h,], exp(-linear_pred))
@@ -68,16 +64,14 @@ local_linear_proposal_1comp <- function( y, x, reg_coef, cov_reg_coef){
 #' Computes the updated first and second moments for the proposal density for
 #'  mixture models using linear Bayes approximation of the target online posterior density.
 #' @param y A vector of response variable values.
-#' @param x  A matrix of dimension h x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension h x p containing the covariates data,
 #'  where h is the number of observations (equal to the length of y) and
 #'  p represent the dimension the covariates in the component models.
 #' Note that the the first column is a column  of 1s which is added
 #' in order to allow for the intercept in the model.
-#' @param z  A matrix of dimension h x (q+1) containing the covariates data,
+#' @param z  A matrix of dimension h x q containing the covariates data,
 #' where h is the number of observations (equal to the length of y) and
 #' q represent the dimension the covariates in the mixture weights model.
-#' Note that the the first column is a column  of 1s which is added
-#' in order to allow for the intercept in the model.
 #' @param reg_coef A vector of the regression coefficients in both
 #' component and mixture weight models.
 #' @param cov_reg_coef The prior covariance matrix of the regression coefficients
@@ -123,16 +117,12 @@ linear_bayes_proposal_multicomp <-function( y, x, z, reg_coef, cov_reg_coef, n_c
 #' Computes the updated first and second moments for the proposal density for
 #'  mixture models using local linearization of the target online posterior density.
 #' @param y A vector of response variable values.
-#' @param x  A matrix of dimension h x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension h x p containing the covariates data,
 #' where h is the number of observations (equal to the length of y) and
 #' p represent the dimension the covariates in the component models.
-#' Note that the the first column is a column  of 1s which is added
-#' in order to allow for the intercept in the model.
-#' @param z  A matrix of dimension h x (q+1) containing the covariates data,
+#' @param z  A matrix of dimension h x q containing the covariates data,
 #' where h is the number of observations (equal to the length of y) and
 #' q represent the dimension the covariates in the mixture weights model.
-#' Note that the the first column is a column  of 1s which is added
-#' in order to allow for the intercept in the model.
 #' @param reg_coef A vector of the regression coefficients in both
 #' component and mixture weight models.
 #' @param cov_reg_coef The prior covariance matrix of the regression coefficients
@@ -175,4 +165,51 @@ local_linear_proposal_multicomp <- function(y, x, z, reg_coef, cov_reg_coef, n_c
   return (list(mean = reg_coef, cov = cov_reg_coef ))
 }
 
+
+#' proposal for the generalized Poisson component model
+#'
+#' this function computes the moments (mean and covariance) of the proposal distribution
+# '
+#' @param y: a vecotor of the response values
+#' @param design_matrix: a matrix of the covariate values augmented by a column of 1s
+#' @param mean_effect: current value of the mean function of the generalized poisson model
+#' @param disp_effect: current value of the overdispersion (scale) function of the generalized poisson model
+#' @param u_mean: transition matrix of the regression parameters on the mean function
+#' @param u_disp: transition matrix of the regression parameters on the overdispersion function.
+
+#' @returns : updated mean_effect, disp_effect, cov_mean and cov_disp.
+
+
+gp_linearbayes <- function(y, design_matrix, mean_effect, disp_effect, u_mean, u_disp) {
+  for (r in seq_len(length(y))) { # loop over obs in the interval
+    # prior settings
+    # mean level
+    cov_val_mean <- u_mean %*% design_matrix[r, ] # covariance value from the mean predictor
+    pvar_mean <- as.numeric(design_matrix[r, ] %*% cov_val_mean) # prior variance mean predictor
+    prior_mean_pred <- design_matrix[r, ] %*% mean_effect # expected prior of the effect of the mean predictor
+    # dispersion level
+    cov_val_disp <- u_disp %*% design_matrix[r, ] # covariance value from the dipersion predictor
+    pvar_disp <- as.vector(design_matrix[r, ] %*% cov_val_disp) # prior variance for dispersion predictor
+    prior_disp_pred <- design_matrix[r, ] %*% disp_effect # expected prior of the effect of the mean predictor
+
+    # updating hyperprior values
+    a <- 1 + pvar_disp^-1
+    b <- pvar_disp^-1 * exp(-prior_disp_pred)
+
+    # implement the laplace approximation
+    mode_mean <- ifelse(y[r] == 0, exp(prior_mean_pred), y[r])
+    mode_disp <- ifelse(y[r] == 0, exp(prior_disp_pred), (sqrt(((a - 2) * y[r] - b)^2 +
+                                                                 4 * (a - 1) * b * y[r]) + (a - 2) * y[r] - b) / (2 * b * y[r]))
+    mode_disp <- ifelse(mode_disp == 0, a - 1, mode_disp) # adjust for singularities in the mode value for the dispersion parameter
+    var_mean <- sqrt((1 + mode_disp * y[r])^2 / mode_mean)
+    var_disp <- sqrt((1 + mode_disp * y[r])^2 / (mode_disp * (b * (1 + mode_disp * y[r])^2 + y[r])))
+
+    # update the proposal moments
+    mean_effect <- mean_effect + (cov_val_mean / pvar_mean) * as.numeric(log(mode_mean) - prior_mean_pred)
+    disp_effect <- disp_effect + (cov_val_disp / pvar_disp) * as.numeric(log(mode_disp) - prior_disp_pred)
+    u_mean <- u_mean + cov_val_mean %*% t(cov_val_mean) * as.numeric((var_mean - pvar_mean) / pvar_mean^2)
+    u_disp <- u_disp + cov_val_disp %*% t(cov_val_disp) * as.numeric((var_disp - pvar_disp) / pvar_disp^2)
+  }
+  return(list(mean_effect = mean_effect, disp_effect = disp_effect, cov_mean = u_mean, cov_disp = u_disp))
+}
 

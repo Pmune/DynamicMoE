@@ -147,7 +147,7 @@ hessian_reg_coeff <- function(x_mat, hess_linear_pred){
 #' their hessian  and the gradient.
 #'
 #' @param  prior_mean Prior mean of the regression coefficients.
-#' #' @param inv_prior_var Inverse of the covariance matrix of the regression coefficients.
+#' @param inv_prior_var Inverse of the covariance matrix of the regression coefficients.
 #' @param gradient The gradient of the regression coefficients.
 #' @param hessian_matrix The Hessian matrix of the regression coefficients.
 #'

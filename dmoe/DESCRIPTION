@@ -1,7 +1,7 @@
 Package: dmoe
 Type: Package
 Title: Dynamic Mixture of Experts
-Version: 0.1.0
+Version: 0.2.0
 Author: Parfait Munezero
 Maintainer: Parfait Munezero<munezero.parfait@gmail.com>
 Description: This package implements a Sequential Bayesian inference method for dynamic mixture of experts. 
@@ -9,8 +9,8 @@ Description: This package implements a Sequential Bayesian inference method for 
              response variable using a finite mixture of regression models with
              covariate-dependent mixture weights. The inference method is based on a 
              sequential Monte Carlo algorithm for online inference.
-License:  MIT
-Imports: pacman, mvtnorm, LaplacesDemon
+License: MIT
+Imports: mvtnorm, LaplacesDemon
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0

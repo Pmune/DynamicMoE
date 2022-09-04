@@ -23,18 +23,14 @@ design_matrix <- function(x, z, n_comp){
 #' Log likelihood for the mixture of experts model.
 #'
 #' @param y A vector of response variable values.
-#' @param x  A matrix of dimension n x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension n x p containing the covariates data,
 #' where n is the number of observations (equal to the length of y) and
 #' p represent the dimension the covariates in the component models.
-#' Note that the the first column is a column  of 1s which is added in order
-#' to allow for the intercept in the model.
-#' @param z  A matrix of dimension n x (q+1) containing the covariates data,
+#' @param z  A matrix of dimension n x q containing the covariates data,
 #' where n is the number of observations (equal to the length of y) and
 #' q represent the dimension the covariates in the mixture weights model.
-#' Note that the the first column is a column  of 1s which is added
-#' in order to allow for the intercept in the model
-#' @param reg_coef Vector of the regression coefficients in both the component
-#' and mixture weight models.
+#' @param reg_coef Vector of the regression coefficients (including the intercept)
+#' in both the component and mixture weight models.
 #' @param n_comp Number of mixture components.
 #' @export
 
@@ -55,19 +51,19 @@ mixture_log_likelihood<-function(y, x, z, reg_coef, n_comp){
 
 #' Log likelihood for Poisson regression model.
 #' @param y A vector of response variable values.
-#' @param x  A matrix of dimension n x (p+1) containing the covariates data,
+#' @param x  A matrix of dimension n x p containing the covariates data,
 #' where n is the number of observations (equal to the length of y) and
-#' p represent the dimension the covariates. Note that the the first column
-#' is a column  of 1s which is added in order to allow for the intercept.
-#' @param reg_coef Vector of the regression coefficients
+#' p represent the dimension the covariates.
+#' @param reg_coef Vector of the regression coefficients including the intercept.
 #' @export
 
-poisson_log_likelihood<-function(y, X, reg_coef)
+poisson_log_likelihood<-function(y, x, reg_coef)
 {
   log_likelihood<-0
+  x <- cbind(1, x) # add extra column for the intercept to the covariate matrix
   for(i in seq_len(length(y)))
   {
-    lambda<-exp(X[i,]%*%reg_coef) # expected effect
+    lambda<-exp(reg_coef%*%x[i,]) # expected effect
     log_likelihood<-log_likelihood + dpois(y[i],lambda,log=TRUE)
   }
   return(log_likelihood)
