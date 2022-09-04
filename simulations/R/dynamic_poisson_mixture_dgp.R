@@ -11,4 +11,9 @@ start_time = Sys.time()
 dynamic_poissonmix_dgp<- simulation_study_wrapper(dgp = "dynamicpoismix", iterations=5)
 end_time = Sys.time()
 print(end_time - start_time)
-save(dynamic_poissonmix_dgp, file=paste0("results/dynamic_poissonmix_dgp_results_", Sys.Date(), ".R"))
+
+# files are saved with a tag appended to the file name to avoid overwriting files.
+# if you have change the tag please make sure to change the file_tag in the plot files.
+file_tag <- "1" # file tag
+
+save(dynamic_poissonmix_dgp, file=paste0("results/dynamic_poissonmix_dgp_results_", file_tag, ".R"))

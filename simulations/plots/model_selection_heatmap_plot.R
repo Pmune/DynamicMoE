@@ -8,12 +8,11 @@ library(ggthemes)
 library(viridis)
 library(reshape2)
 
-# files are saved with a date tag appended to the file name.
-# please change the tag to the appropriate date from the list of files in the results folder.
+# files are saved with a tag appended to the file name to avoid overwriting files.
+# if you have changed the tag please change the file_tag to the appropriate value.
+file_tag <- "1" # file tag
 
-date_tag <- "2022-09-04" # date tag
-
-load(paste0("results/static_poisson_dgp_results","_", date_tag, ".R")) # Static Poisson
+load(paste0("results/static_poisson_dgp_results","_", file_tag, ".R")) # Static Poisson
 static_pois<- expand.grid(Discount = as.character(c(.3,.4,.5,.6,.7,.8,.9,.95,.99))
                 ,Components = c("1", "2", "3"))
 
@@ -22,14 +21,14 @@ static_pois$Value<-as.vector(static_poisson_dgp$freq)
 static_pois$Model<-"M1"
 
 
-load(paste0("results/dynamic_poisson_dgp_results","_", date_tag, ".R")) # Dynamic Poisson
+load(paste0("results/dynamic_poisson_dgp_results","_", file_tag, ".R")) # Dynamic Poisson
 dyn_pois<-  expand.grid(Discount = as.character(c(.3,.4,.5,.6,.7,.8,.9,.95,.99))
                     ,Components = c("1", "2", "3"))
 dyn_pois$Value<-as.vector(dynamic_poisson_dgp$freq)
 dyn_pois$Model<-"M2"
 
 
-load(paste0("results/dynamic_poissonmix_dgp_results","_", date_tag, ".R")) # Dynamic mixture of Poisson
+load(paste0("results/dynamic_poissonmix_dgp_results","_", file_tag, ".R")) # Dynamic mixture of Poisson
 dyn_pois_mix<- expand.grid(Discount = as.character(c(.3,.4,.5,.6,.7,.8,.9,.95,.99))
                     ,Components = c("1", "2", "3"))
 dyn_pois_mix$Value<-as.vector(dynamic_poissonmix_dgp$freq)

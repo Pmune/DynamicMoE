@@ -7,18 +7,17 @@ hrbrthemes::import_roboto_condensed()
 
 # Load parfaits model LPS
 #
-# files are saved with a date tag appended to the file name.
-# please change the tag to the appropriate date from the list of files in the results folder.
+# files are saved with a tag appended to the file name to avoid overwriting files.
+# if you have changed the tag please change the file_tag to the appropriate value.
+file_tag <- "1" # file tag
 
-date_tag <- "2022-09-04"
-
-load(paste0("results/static_poisson_dgp_results","_", date_tag, ".R")) # Static Poisson
+load(paste0("results/static_poisson_dgp_results","_", file_tag, ".R")) # Static Poisson
 pois_lps_diff <- static_poisson_dgp$LPS.dif
 
-load(paste0("results/dynamic_poisson_dgp_results","_", date_tag, ".R")) # Dynamic Poisson
+load(paste0("results/dynamic_poisson_dgp_results","_", file_tag, ".R")) # Dynamic Poisson
 dynpois_lps_diff <- dynamic_poisson_dgp$LPS.dif
 
-load(paste0("results/dynamic_poissonmix_dgp_results","_", date_tag, ".R")) # Dynamic mixture of Poisson
+load(paste0("results/dynamic_poissonmix_dgp_results","_", file_tag, ".R")) # Dynamic mixture of Poisson
 mix_dynpois_lps_diff <- dynamic_poissonmix_dgp$LPS.dif
 iterations <- length(mix_dynpois_lps_diff)
 

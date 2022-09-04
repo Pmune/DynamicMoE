@@ -126,7 +126,12 @@ ess_comparison_simul <- function(iterations, n_particles,  paramdim = 2, discoun
 n_particles <- 1000 # number of particles
 iterations <- 3 # number of iterations
 ess_comp <- ess_comparison_simul(paramdim = 2, n_particles = n_particles, iterations = iterations)
-save(ess_comp,file = paste0("results/ess_comp_", Sys.Date(), ".R"))
+
+# files are saved with a tag appended to the file name to avoid overwriting files.
+# if you have change the tag please make sure to change the file_tag in the plot files.
+file_tag <- "1" # file tag
+
+save(ess_comp,file = paste0("results/ess_comp_", file_tag, ".R"))
 
 #load("results/ess_comp.R")
 ess_lb <- ess_comp$lb # effective sample size rate linear Bayes method
