@@ -5,25 +5,31 @@
 \title{Proposal function based on the linear Bayes approximation of the target
 online posterior density.}
 \usage{
-linear_bayes_proposal_multicomp(y, x, z, param, cov_param, n_comp)
+linear_bayes_proposal_multicomp(y, x, z, reg_coef, cov_reg_coef, n_comp)
 }
 \arguments{
 \item{y}{A vector of response variable values.}
 
-\item{x}{A matrix of dimension h x (p+1) containing the covariates data, where h is the number of observations (equal to the length of y) and p represent the dimension the covariates in the component models.
-Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.}
+\item{x}{A matrix of dimension h x p containing the covariates data,
+ where h is the number of observations (equal to the length of y) and
+ p represent the dimension the covariates in the component models.
+Note that the the first column is a column  of 1s which is added
+in order to allow for the intercept in the model.}
 
-\item{z}{A matrix of dimension h x (q+1) containing the covariates data, where h is the number of observations (equal to the length of y) and q represent the dimension the covariates in the mixture weights model.
-Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.}
+\item{z}{A matrix of dimension h x q containing the covariates data,
+where h is the number of observations (equal to the length of y) and
+q represent the dimension the covariates in the mixture weights model.}
 
-\item{param}{The prior mean of the regression parameter in both component and mixture weight models.}
+\item{reg_coef}{A vector of the regression coefficients in both
+component and mixture weight models.}
 
-\item{cov_param}{The prior covariance matrix of the regression parameter in both component and mixture weight models.}
+\item{cov_reg_coef}{The prior covariance matrix of the regression coefficients
+in both component and mixture weight models.}
 
 \item{n_comp}{Number of mixture components.}
 }
 \value{
-Updated mean and covariance matrix of the regression parameter.
+Updated mean and covariance matrix of the regression coefficients.
 }
 \description{
 Computes the updated first and second moments for the proposal density for

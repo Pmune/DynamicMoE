@@ -2,7 +2,7 @@
 % Please edit documentation in R/prior_moments.R
 \name{reg_coef_prior_moment}
 \alias{reg_coef_prior_moment}
-\title{reg_coef_prior_moment}
+\title{Compute the prior moments of the regression coefficients.}
 \usage{
 reg_coef_prior_moment(coeff, weights)
 }
@@ -10,11 +10,11 @@ reg_coef_prior_moment(coeff, weights)
 \item{coeff}{An MxP matrix containing sampled regression coefficients.
 M is the size of the sample and P is the dimension of the regression coefficients}
 
-\item{weights}{A vector of lenght M containing the weights of each sampled regression coefficient.}
+\item{weights}{A vector of length M containing the weights of each sampled regression coefficient.}
 }
 \value{
 The prior mean and variance of the regression coefficients.
 }
 \description{
-Computes the prior moments of the regression coefficients.
+Compute the prior moments of the regression coefficients.
 }

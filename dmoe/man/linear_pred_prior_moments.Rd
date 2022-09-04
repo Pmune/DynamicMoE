@@ -2,25 +2,35 @@
 % Please edit documentation in R/prior_moments.R
 \name{linear_pred_prior_moments}
 \alias{linear_pred_prior_moments}
-\title{linear_pred_prior_moments}
+\title{Compute the prior moments of the linear predictor from the degenerate joint
+prior distribution of the linear predictor and the regression coefficients.}
 \usage{
 linear_pred_prior_moments(x, z, param, cov_mat, n_comp)
 }
 \arguments{
-\item{x}{A matrix of dimension h x (p+1) containing the covariates data, where h is the number of observations (equal to the length of y) and p represent the dimension the covariates in the component models.
-Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.}
+\item{x}{A matrix of dimension h x p containing the covariates data,
+where h is the number of observations (equal to the length of y) and
+p represent the dimension the covariates in the component models.
+Note that the the first column is a column  of 1s which is added in order
+to allow for the intercept in the model.}
 
-\item{z}{A matrix of dimension h x (q+1) containing the covariates data, where h is the number of observations (equal to the length of y) and q represent the dimension the covariates in the mixture weights model.
-Note that the the first column is a column  of 1s which is added in order to allow for the intercept in the model.}
+\item{z}{A matrix of dimension h x (q+1) containing the covariates data,
+where h is the number of observations (equal to the length of y) and
+q represent the dimension the covariates in the mixture weights model.
+Note that the the first column is a column  of 1s which is added in order
+to allow for the intercept in the model.}
 
-\item{param}{The prior mean of the regression coefficients in both the component and mixture weight models.}
+\item{param}{The prior mean of the regression coefficients in both
+the component and mixture weight models.}
 
-\item{cov_mat}{The prior covariance matrix of the regression coefficients in both the component and mixture weight models.}
+\item{cov_mat}{The prior covariance matrix of the regression coefficients
+in both the component and mixture weight models.}
 
 \item{n_comp}{Number of mixture components.}
 }
 \value{
-The prior mean and variance of the linear predictor. Also, the covariance of the linear predictor and the regression coefficients is returned.
+The prior mean and variance of the linear predictor.
+Also, the covariance of the linear predictor and the regression coefficients is returned.
 }
 \description{
 Compute the prior moments of the linear predictor from the degenerate joint

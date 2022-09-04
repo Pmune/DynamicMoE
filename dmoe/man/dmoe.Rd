@@ -8,17 +8,15 @@ dmoe(
   Data,
   intervals,
   particle_size,
+  exp_col,
   mix_col = NULL,
-  exp_col = NULL,
   n_comp = 1,
   v_init = 1,
   time_ind = 1,
   response_ind = 2,
   alpha = 0.45,
-  R = 2,
+  duplicate_num = 2,
   proposal_method = "linearbayes",
-  mpf = F,
-  static = F,
   return_all = F
 )
 }
