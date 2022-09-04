@@ -2,9 +2,7 @@
 % Please edit documentation in R/stratified_rejection_resampling.R
 \name{normalize}
 \alias{normalize}
-
 \title{A function for normalizing any set of empirical densities.}
-
 \usage{
 normalize(values)
 }
@@ -15,7 +13,5 @@ normalize(values)
 A vector of normalized densities
 }
 \description{
-
 A function for normalizing any set of empirical densities.
-
 }
