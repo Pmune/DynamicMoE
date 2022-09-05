@@ -42,4 +42,7 @@ lpsplot <- lps_diff_data %>%
   ylab("LPS diff") +
   xlab(" ")
 
-lpsplot
+print(lpsplot)
+png("plots/lps_diff_boxplot_m1_m3.png", width=600, height=300)
+print(lpsplot)
+dev.off()

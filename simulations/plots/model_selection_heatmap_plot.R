@@ -55,4 +55,8 @@ freq_plot<-ggplot(data = selection_freqs, aes(x = Components , y =Discount)) +
 
 scale_fill_viridis(alpha=0.8)
 
-freq_plot
+print(freq_plot)
+png("plots/model_selection_frequency_heatmap.png", width=600, height=300)
+print(freq_plot)
+dev.off()
+

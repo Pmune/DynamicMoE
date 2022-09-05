@@ -83,4 +83,7 @@ lps_boxplot <- lps_data %>%
   scale_y_continuous(breaks=seq(-100, 400,100)) +
   ylab("LPS diff")
 
-lps_boxplot
+print(lps_boxplot)
+png("plots/lps_diff_boxplot_autoregressive_models.png", width=600, height=300)
+print(lps_boxplot)
+dev.off()
