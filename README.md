@@ -18,7 +18,11 @@ library("devtools")
 devtools::install_github(repo = "Pmune/DynamicMoE/dmoe")
 ```
 
-## Exapmles
+## File organization
+
+- The `dmoe` package is saved in the folder `dmoe`.
+- The folder `simulations` includes some examples.
+## Examples
 
 Examples are provided through simulation experiments, where data are generated from:
 
