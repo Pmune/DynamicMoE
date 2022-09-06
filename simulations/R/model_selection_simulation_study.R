@@ -76,6 +76,10 @@ train_models <- function(sim_data, discount_grid, components,
               library(dmoe)
               mix_col <- c(3)
               exp_col <- c(3)
+              sim_data <- sim_data
+              discount_grid <- discount_grid
+              time_intervals <- time_intervals
+              n_particles <- n_particles
 
               # train models with various discount factors
               tryCatch({
@@ -132,7 +136,7 @@ simulation_study_wrapper <- function(dgp, iterations, n_particles = 1000){
   # dates used to simulate data
   dates<-seq(as.Date("2017-01-01"), as.Date("2017-12-31"), length.out=10)
   time_intervals <- c(dates[1]-1, dates) # partition of the time.
-  discounts <- c(0.3,.4,.5,.6,.7,.8,.9,.95,.99) # discount factors (alpha values)
+  discounts <- c(0.3,.4,.5,.6,.7,.8,.9,.95,.99) # discount factors
   components <- c(1,2,3) # number of components in the models.
   paramdim <- 2 # dimension of the regression coefficients
   # object to save the selection frequencies of the trained models

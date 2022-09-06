@@ -41,7 +41,10 @@ train_autoregressive_models <- function(sim_data, discount_grid, batch_size, n_p
                 y <- series[-1]
                 t <- seq_len(length(y))
                 return(data.frame(time=t, y=y, x=x))
-                }
+              }
+              n_particles = n_particles
+              sim_data = sim_data
+              batch_size = batch_size
 
               batch_intervals <- seq(1, nrow(sim_data) + 1, by = batch_size)
               mix_col <- c(3)

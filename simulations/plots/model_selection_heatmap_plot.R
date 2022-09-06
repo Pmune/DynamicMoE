@@ -1,7 +1,5 @@
 # plot the heatmap of the model selection frequency. Figure 5.1 in the paper.
 rm(list=ls())
-graphics.off()
-cat("\014")
 
 library(ggplot2)
 library(ggthemes)

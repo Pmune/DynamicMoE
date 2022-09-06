@@ -1,12 +1,16 @@
 # run the simulation experiment with the dynamic mixture of Poisson data generating process.
 # load simulation study file
+
+rm(list=ls())
+
+
 source('R/model_selection_simulation_study.R')
 
 # ------- run the simulation study ------
 
 message("----------Experiment with dynamic mixture of Poisson DGP starts---------")
 start_time = Sys.time()
-dynamic_poissonmix_dgp<- simulation_study_wrapper(dgp = "dynamicpoismix", iterations=10)
+dynamic_poissonmix_dgp<- simulation_study_wrapper(dgp = "dynamicpoismix", iterations=50)
 end_time = Sys.time()
 print(end_time - start_time)
 

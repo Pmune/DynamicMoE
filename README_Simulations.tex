@@ -1,0 +1,227 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Code for dynamic mixture of experts models},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Code for dynamic mixture of experts models}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{TCH-21-168.R1}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{description}{%
+\subsection{Description}\label{description}}
+
+The provided code files implement all simulation experiments presented
+in the Table 2, Section 5. The table presents five experiments:
+
+\begin{itemize}
+\tightlist
+\item
+  M1: Static Poisson regression data generating process model.
+\item
+  M2: Dynamic Poisson regression data generating process model.
+\item
+  M3: Dynamic mixture of Poisson regression experts data generating
+  process model.
+\item
+  M4: Static mixture of Poisson autoregressive experts data generating
+  process model.
+\item
+  M5: Dynamic mixture of Poisson autoregressive experts data generating
+  process model.
+\end{itemize}
+
+In the experiments M4 and M5, the SMC inference methodology proposed in
+the paper is compared with the MCMC method in Villani et al.~(2012). The
+SMC inference is implemented in R in the form of a package; the R
+package's name is \texttt{dmoe}. The MCMC inference is implemented in
+Matlab which is also used to simulate data (in M4 and M5 experiments)
+and to train models with static parameter. The other experiments, M1-M3,
+are fully implemented in R.
+
+\hypertarget{what-is-included-in-the-submited-files}{%
+\subsection{What is included in the submited
+files}\label{what-is-included-in-the-submited-files}}
+
+We submit:
+
+\begin{itemize}
+\tightlist
+\item
+  The R code for the simulation experiments in the folder
+  \texttt{simulations}.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The R package \texttt{dmoe} zip file \texttt{dmoe.zip} is saved in
+    \texttt{simulations}.
+  \end{itemize}
+\item
+  The Matlab code for the MCMC sampler and simulation experiments M4-M5
+  in the folder \texttt{OnlineMoEMatlab}.
+\end{itemize}
+
+\hypertarget{r-code-instructions}{%
+\subsection{R code instructions}\label{r-code-instructions}}
+
+The \texttt{simulations} folder includes:
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{R} folder. All source codes implementing the simulation
+  experiments are saved in this folder.
+\item
+  The \texttt{data} folder. In case one can not run the Matlab code, two
+  csv files \texttt{simdata\_static.csv} and \texttt{simdata\_dyn.csv},
+  which contains \(50\) datasets generated from M4 and M5 respectively,
+  are saved in this folder.
+\item
+  The \texttt{results} folder. All results are saved in this folder. In
+  this folder we also saved files containing the log predictive scores
+  (LPS), computed from the MCMC sampler, required to replicate the
+  Figure 5.3.
+\item
+  The \texttt{plots} folder. It contains plots and the code generating
+  the plots.
+\end{itemize}
+
+The \texttt{R} folder includes the file
+\texttt{run\_all\_simulation\_experiments.R} which automates all
+experiments. The code in this file does:
+
+\begin{itemize}
+\tightlist
+\item
+  Install the \texttt{dmoe} package
+\item
+  Install all libraries required to run the simulation experiments and
+  to generate the plots.
+\item
+  Run each of the M1-M4 experiments and the generate the plots
+  automatically.
+\end{itemize}
+
+To run the code in \texttt{run\_all\_simulation\_experiments.R}:
+
+\begin{itemize}
+\tightlist
+\item
+  If you use Rstudio, double click on the \texttt{simulations.Rproject}.
+  It will open up an Rstudio window with all files.\\
+\item
+  Otherwise, set the working directory to the \texttt{simulations}
+  folder and run the code in
+  \texttt{run\_all\_simulation\_experiments.R}.
+\end{itemize}
+
+Note: - All lines with the \texttt{source("path\_to\_file.R")} runs
+automatically an experiment. All are commented out except the
+experiments M1-M3. In case you want to run an experiment other than
+M1-M3, just uncomment it and run it. - The experiments take a long time
+to execute.To reduce the running time, I have reduced the iterations in
+each experiment to 10 iterations. With 10 iterations each experiment
+takes roughly 2 hours.
+
+\hypertarget{matlab-code-instructions}{%
+\subsection{Matlab code instructions}\label{matlab-code-instructions}}
+
+\begin{itemize}
+\item
+  Put the folder \texttt{OnlineMoEMatlab} and its sub-folders on
+  Matlab's path.
+\item
+  Run the file \texttt{SimulateEstimateAndComputeLPS.m} in the folder
+  \texttt{OnlineMoEMatlab/projects/onlineMoE}
+\item
+  The code in \texttt{SimulateEstimateAndComputeLPS.m} does:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Generates data from static and dynamic mixture of Poisson
+    autoregressive experts.
+  \item
+    Gibbs sampling for mixture of Poisson autoregressive experts.
+  \item
+    Prediction on test data where the posterior is updated at every
+    \texttt{batchSize} observation.
+  \item
+    Compute log predictive score (LPS) on the test data.
+  \end{itemize}
+\end{itemize}
+
+Note: the files \texttt{OnlineMoEMatlab/GSM.m} and
+\texttt{OnlineMoEMatlab/models/pois/Pois.m} Contains a lot of MCMC and
+models settings.
+
+\end{document}
