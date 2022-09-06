@@ -1,5 +1,5 @@
 
-# This script runs automatically all simulation experiments in section 5.
+# This script runs automatically all simulation experiments.
 # Each experiment can be run independently. Therefore if needed each sourced file
 # can be run in its separate window to gain computation time. However, be aware
 # that some experiments use the parallel computing packages `doParallel` and
@@ -26,9 +26,9 @@ source("R/static_poisson_dgp.R") # run the static Poisson simulation DGP
 source("R/dynamic_poisson_dgp.R") # run the dynamic Poisson simulation DGP
 source("R/dynamic_poisson_mixture_dgp.R") # run the dynamic Poisson mixture simulation DGP
 
-# generate plots for Fig 5.1 and 5.2 in the paper.
-source("plots/model_selection_heatmap_plot.R") # Fig 5.1
-#source("plots/lps_diff_boxplot_dynamic_models.R") # Fig 5.2
+# generate heatmap and lps diff plots .
+source("plots/model_selection_heatmap_plot.R")
+source("plots/lps_diff_boxplot_dynamic_models.R")
 
 
 # ---------- Autoregressive timeseries DGP experiments----------------------------
@@ -39,8 +39,8 @@ source("plots/model_selection_heatmap_plot.R") # Fig 5.1
 source("R/static_timeseries_dgp.R") # run the static mixture of Poisson autoregressive DGP
 source("R/dynamic_timeseries_dgp.R") # run the dynamic mixture of Poisson autoregressive DGP
 
-# generate Figure 5.3 in the paper.
+# generate lps diff plots
 source("plots/lps_diff_boxplot_autoregressive_models.R") # Fig 5.3
 
 #----------run the effective sample size rate experiment-------------------------
-source("R/ess_comparison.R") # Fig 5.4
+source("R/ess_comparison.R")
