@@ -20,7 +20,7 @@ devtools::install_github(repo = "Pmune/DynamicMoE/dmoe")
 
 ## File organization
 
-- The `dmoe` package is saved in the folder `dmoe`.
+- The R package is saved in the folder `dmoe`. All codes are saved in the subfolder `R`.
 - The folder `simulations` includes some examples.
 ## Examples
 

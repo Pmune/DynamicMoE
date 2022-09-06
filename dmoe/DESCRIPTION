@@ -2,8 +2,8 @@ Package: dmoe
 Type: Package
 Title: Dynamic Mixture of Experts
 Version: 0.2.0
-#Author: 
-#Maintainer: 
+Author: Parfait Munezero
+Maintainer: Parfait Munezero (munezero.parfait@gmail.com)
 Description: This package implements a Sequential Bayesian inference method for dynamic mixture of experts. 
              A mixture of experts models the conditional density of a 
              response variable using a finite mixture of regression models with
